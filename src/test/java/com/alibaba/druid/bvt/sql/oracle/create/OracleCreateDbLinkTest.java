@@ -1,5 +1,5 @@
 /*
- * Copyright 1999-2101 Alibaba Group Holding Ltd.
+ * Copyright 1999-2017 Alibaba Group Holding Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,16 +15,15 @@
  */
 package com.alibaba.druid.bvt.sql.oracle.create;
 
-import java.util.List;
-
-import org.junit.Assert;
-
 import com.alibaba.druid.sql.OracleTest;
 import com.alibaba.druid.sql.SQLUtils;
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.dialect.oracle.parser.OracleStatementParser;
 import com.alibaba.druid.sql.dialect.oracle.visitor.OracleSchemaStatVisitor;
 import com.alibaba.druid.util.JdbcConstants;
+import org.junit.Assert;
+
+import java.util.List;
 
 public class OracleCreateDbLinkTest extends OracleTest {
 
@@ -37,7 +36,7 @@ public class OracleCreateDbLinkTest extends OracleTest {
         SQLStatement statement = statementList.get(0);
         print(statementList);
 
-        Assert.assertEquals("CREATE PUBLIC DATABASE LINK remote USING 'remote'",
+        Assert.assertEquals("CREATE PUBLIC DATABASE LINK remote USING 'remote';",
                             SQLUtils.toSQLString(statement, JdbcConstants.ORACLE));
 
         OracleSchemaStatVisitor visitor = new OracleSchemaStatVisitor();
@@ -55,7 +54,7 @@ public class OracleCreateDbLinkTest extends OracleTest {
         SQLStatement statement = statementList.get(0);
         print(statementList);
 
-        Assert.assertEquals("CREATE DATABASE LINK local CONNECT TO hr IDENTIFIED BY hr USING 'local'",
+        Assert.assertEquals("CREATE DATABASE LINK local CONNECT TO hr IDENTIFIED BY hr USING 'local';",
                             SQLUtils.toSQLString(statement, JdbcConstants.ORACLE));
 
         OracleSchemaStatVisitor visitor = new OracleSchemaStatVisitor();
@@ -74,7 +73,7 @@ public class OracleCreateDbLinkTest extends OracleTest {
         SQLStatement statement = statementList.get(0);
         print(statementList);
 
-        Assert.assertEquals("CREATE DATABASE LINK remote.us.oracle.com CONNECT TO CURRENT_USER USING 'remote'",
+        Assert.assertEquals("CREATE DATABASE LINK remote.us.oracle.com CONNECT TO CURRENT_USER USING 'remote';",
                             SQLUtils.toSQLString(statement, JdbcConstants.ORACLE));
 
         OracleSchemaStatVisitor visitor = new OracleSchemaStatVisitor();

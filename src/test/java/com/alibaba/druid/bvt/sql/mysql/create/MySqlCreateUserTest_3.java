@@ -1,5 +1,5 @@
 /*
- * Copyright 1999-2101 Alibaba Group Holding Ltd.
+ * Copyright 1999-2017 Alibaba Group Holding Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,14 @@
  */
 package com.alibaba.druid.bvt.sql.mysql.create;
 
-import java.util.List;
-
-import org.junit.Assert;
-
 import com.alibaba.druid.sql.MysqlTest;
 import com.alibaba.druid.sql.SQLUtils;
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
 import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlSchemaStatVisitor;
+import org.junit.Assert;
+
+import java.util.List;
 
 public class MySqlCreateUserTest_3 extends MysqlTest {
 
@@ -41,10 +40,10 @@ public class MySqlCreateUserTest_3 extends MysqlTest {
         MySqlSchemaStatVisitor visitor = new MySqlSchemaStatVisitor();
         stmt.accept(visitor);
         
-        Assert.assertEquals("CREATE USER 'jeffrey'@'localhost' IDENTIFIED BY PASSWORD '*90E462C37378CED12064BB3388827D2BA3A9B689'", //
+        Assert.assertEquals("CREATE USER 'jeffrey'@'localhost' IDENTIFIED BY PASSWORD '*90E462C37378CED12064BB3388827D2BA3A9B689';", //
                             SQLUtils.toMySqlString(stmt));
         
-        Assert.assertEquals("create user 'jeffrey'@'localhost' identified by password '*90E462C37378CED12064BB3388827D2BA3A9B689'", //
+        Assert.assertEquals("create user 'jeffrey'@'localhost' identified by password '*90E462C37378CED12064BB3388827D2BA3A9B689';", //
                             SQLUtils.toMySqlString(stmt, SQLUtils.DEFAULT_LCASE_FORMAT_OPTION));
 
 //        System.out.println("Tables : " + visitor.getTables());

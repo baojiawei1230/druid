@@ -1,5 +1,5 @@
 /*
- * Copyright 1999-2101 Alibaba Group Holding Ltd.
+ * Copyright 1999-2017 Alibaba Group Holding Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,6 @@
  */
 package com.alibaba.druid.bvt.sql.mysql.select;
 
-import java.util.List;
-
-import org.junit.Assert;
-
 import com.alibaba.druid.sql.MysqlTest;
 import com.alibaba.druid.sql.SQLUtils;
 import com.alibaba.druid.sql.ast.SQLStatement;
@@ -28,6 +24,9 @@ import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSelectQueryBlock;
 import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
 import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlSchemaStatVisitor;
 import com.alibaba.druid.stat.TableStat;
+import org.junit.Assert;
+
+import java.util.List;
 
 public class MySqlSelectTest_12 extends MysqlTest {
 
@@ -55,16 +54,17 @@ public class MySqlSelectTest_12 extends MysqlTest {
         Assert.assertEquals(1, visitor.getTables().size());
         Assert.assertEquals(5, visitor.getColumns().size());
         Assert.assertEquals(0, visitor.getConditions().size());
-        Assert.assertEquals(1, visitor.getOrderByColumns().size());
+        assertEquals(1, visitor.getOrderByColumns().size());
 
         Assert.assertTrue(visitor.getTables().containsKey(new TableStat.Name("ub_userdiscuss")));
 
         String output = SQLUtils.toMySqlString(stmt);
-        Assert.assertEquals("SELECT COUNT(*) AS a" + //
-                            "\nFROM (SELECT nickname, mobile, comment, createdate" + //
-                            "\n\tFROM ub_userdiscuss" + //
-                            "\n\tORDER BY discuss_id DESC" + //
-                            "\n\t) b", //
+        assertEquals("SELECT COUNT(*) AS a\n" +
+                        "FROM (\n" +
+                        "\tSELECT nickname, mobile, comment, createdate\n" +
+                        "\tFROM ub_userdiscuss\n" +
+                        "\tORDER BY discuss_id DESC\n" +
+                        ") b", //
                             output);
     }
 }

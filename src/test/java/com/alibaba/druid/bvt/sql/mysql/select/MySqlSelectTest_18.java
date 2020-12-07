@@ -1,5 +1,5 @@
 /*
- * Copyright 1999-2101 Alibaba Group Holding Ltd.
+ * Copyright 1999-2017 Alibaba Group Holding Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,14 @@
  */
 package com.alibaba.druid.bvt.sql.mysql.select;
 
-import java.util.List;
-
-import org.junit.Assert;
-
 import com.alibaba.druid.sql.MysqlTest;
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
 import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlSchemaStatVisitor;
 import com.alibaba.druid.stat.TableStat.Column;
+import org.junit.Assert;
+
+import java.util.List;
 
 public class MySqlSelectTest_18 extends MysqlTest {
 
@@ -54,13 +53,13 @@ public class MySqlSelectTest_18 extends MysqlTest {
         MySqlSchemaStatVisitor visitor = new MySqlSchemaStatVisitor();
         statemen.accept(visitor);
 
-//        System.out.println("Tables : " + visitor.getTables());
-//        System.out.println("fields : " + visitor.getColumns());
+        System.out.println("Tables : " + visitor.getTables());
+        System.out.println("fields : " + visitor.getColumns());
 //        System.out.println("coditions : " + visitor.getConditions());
 //        System.out.println("orderBy : " + visitor.getOrderByColumns());
         
         Assert.assertEquals(2, visitor.getTables().size());
-        Assert.assertEquals(15, visitor.getColumns().size());
+        Assert.assertEquals(14, visitor.getColumns().size());
         Assert.assertEquals(2, visitor.getConditions().size());
 
         Assert.assertTrue(visitor.getColumns().contains(new Column("sys_user", "id")));

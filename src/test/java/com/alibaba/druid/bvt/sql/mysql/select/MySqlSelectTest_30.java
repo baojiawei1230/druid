@@ -1,5 +1,5 @@
 /*
- * Copyright 1999-2101 Alibaba Group Holding Ltd.
+ * Copyright 1999-2017 Alibaba Group Holding Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,14 @@
  */
 package com.alibaba.druid.bvt.sql.mysql.select;
 
-import java.util.List;
-
-import org.junit.Assert;
-
 import com.alibaba.druid.sql.MysqlTest;
 import com.alibaba.druid.sql.SQLUtils;
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
 import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlSchemaStatVisitor;
+import org.junit.Assert;
+
+import java.util.List;
 
 public class MySqlSelectTest_30 extends MysqlTest {
 
@@ -55,14 +54,14 @@ public class MySqlSelectTest_30 extends MysqlTest {
             String output = SQLUtils.toMySqlString(stmt);
             Assert.assertEquals("SELECT name"
                     + "\nFROM tab1"
-                    + "\nFOR UPDATE NO_WAIT", //
+                    + "\nFOR UPDATE NOWAIT", //
                                 output);
         }
         {
             String output = SQLUtils.toMySqlString(stmt, SQLUtils.DEFAULT_LCASE_FORMAT_OPTION);
             Assert.assertEquals("select name"
                     + "\nfrom tab1"
-                    + "\nfor update no_wait", //
+                    + "\nfor update nowait", //
                                 output);
         }
     }

@@ -1,5 +1,6 @@
 package com.alibaba.druid.bvt.sql.mysql.param;
 
+import com.alibaba.druid.DbType;
 import com.alibaba.druid.sql.SQLUtils;
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.parser.SQLParserUtils;
@@ -17,8 +18,7 @@ import java.util.List;
  */
 public class MySqlParameterizedOutputVisitorTest_32 extends TestCase {
     public void test_for_parameterize() throws Exception {
-        final String dbType = JdbcConstants.MYSQL;
-
+        final DbType dbType = JdbcConstants.MYSQL;
 
         String sql = "/* cds internal mark */select count(*) as count  from (" +
                 "( select env_type from `tmall_miaoscm`.`miao_sale_ledger_0060` where `id` > 1 limit 136 )" +
@@ -26,7 +26,7 @@ public class MySqlParameterizedOutputVisitorTest_32 extends TestCase {
                 ") as miao_sale_ledger_0060 where `miao_sale_ledger_0060`.`env_type` = 3";
 
         String psql = ParameterizedOutputVisitorUtils.parameterize(sql, dbType);
-        assertEquals("SELECT COUNT(*) AS count\n" +
+        assertEquals("SELECT count(*) AS count\n" +
                 "FROM (\n" +
                 "\t(SELECT env_type\n" +
                 "\tFROM `tmall_miaoscm`.miao_sale_ledger\n" +
@@ -65,10 +65,10 @@ public class MySqlParameterizedOutputVisitorTest_32 extends TestCase {
         StringBuilder buf = new StringBuilder();
         SQLASTOutputVisitor visitor1 = SQLUtils.createOutputVisitor(buf, dbType);
         visitor1.addTableMapping("udata", "udata_0888");
-        visitor1.setParameters(visitor.getParameters());
+        visitor1.setInputParameters(visitor.getParameters());
         pstmt.accept(visitor1);
 
-        assertEquals("SELECT COUNT(*) AS count\n" +
+        assertEquals("SELECT count(*) AS count\n" +
                 "FROM (\n" +
                 "\t(SELECT env_type\n" +
                 "\tFROM `tmall_miaoscm`.miao_sale_ledger\n" +

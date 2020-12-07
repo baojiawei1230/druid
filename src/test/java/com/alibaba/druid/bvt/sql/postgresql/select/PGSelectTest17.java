@@ -1,5 +1,5 @@
 /*
- * Copyright 1999-2101 Alibaba Group Holding Ltd.
+ * Copyright 1999-2017 Alibaba Group Holding Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,13 @@
  */
 package com.alibaba.druid.bvt.sql.postgresql.select;
 
-import java.util.List;
-
-import org.junit.Assert;
-
 import com.alibaba.druid.sql.PGTest;
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.dialect.postgresql.parser.PGSQLStatementParser;
 import com.alibaba.druid.sql.dialect.postgresql.visitor.PGSchemaStatVisitor;
+import org.junit.Assert;
+
+import java.util.List;
 
 public class PGSelectTest17 extends PGTest {
 
@@ -51,12 +50,12 @@ public class PGSelectTest17 extends PGTest {
         PGSchemaStatVisitor visitor = new PGSchemaStatVisitor();
         statemen.accept(visitor);
 
-//        System.out.println("Tables : " + visitor.getTables());
-//        System.out.println("fields : " + visitor.getColumns());
+        System.out.println("Tables : " + visitor.getTables());
+        System.out.println("fields : " + visitor.getColumns());
 //        System.out.println("coditions : " + visitor.getConditions());
 
-        Assert.assertEquals(11, visitor.getColumns().size());
-        Assert.assertEquals(2, visitor.getTables().size());
+        Assert.assertEquals(5, visitor.getColumns().size());
+        Assert.assertEquals(1, visitor.getTables().size());
     }
 }
 

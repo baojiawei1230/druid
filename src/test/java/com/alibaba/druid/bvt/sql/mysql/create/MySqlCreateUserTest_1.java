@@ -1,5 +1,5 @@
 /*
- * Copyright 1999-2101 Alibaba Group Holding Ltd.
+ * Copyright 1999-2017 Alibaba Group Holding Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,14 @@
  */
 package com.alibaba.druid.bvt.sql.mysql.create;
 
-import java.util.List;
-
-import org.junit.Assert;
-
 import com.alibaba.druid.sql.MysqlTest;
 import com.alibaba.druid.sql.SQLUtils;
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
 import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlSchemaStatVisitor;
+import org.junit.Assert;
+
+import java.util.List;
 
 public class MySqlCreateUserTest_1 extends MysqlTest {
 
@@ -40,9 +39,9 @@ public class MySqlCreateUserTest_1 extends MysqlTest {
         MySqlSchemaStatVisitor visitor = new MySqlSchemaStatVisitor();
         stmt.accept(visitor);
         
-        Assert.assertEquals("CREATE USER 'jeffrey'@'localhost'", //
+        Assert.assertEquals("CREATE USER 'jeffrey'@'localhost';", //
                             SQLUtils.toMySqlString(stmt));
-        Assert.assertEquals("create user 'jeffrey'@'localhost'", //
+        Assert.assertEquals("create user 'jeffrey'@'localhost';", //
                             SQLUtils.toMySqlString(stmt, SQLUtils.DEFAULT_LCASE_FORMAT_OPTION));
 
 //        System.out.println("Tables : " + visitor.getTables());

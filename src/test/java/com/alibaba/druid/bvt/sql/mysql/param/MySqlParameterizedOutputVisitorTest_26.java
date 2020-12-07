@@ -1,5 +1,6 @@
 package com.alibaba.druid.bvt.sql.mysql.param;
 
+import com.alibaba.druid.DbType;
 import com.alibaba.druid.sql.SQLUtils;
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.parser.SQLParserUtils;
@@ -17,7 +18,7 @@ import java.util.List;
  */
 public class MySqlParameterizedOutputVisitorTest_26 extends TestCase {
     public void test_for_parameterize() throws Exception {
-        final String dbType = JdbcConstants.MYSQL;
+        final DbType dbType = JdbcConstants.MYSQL;
 
         String sql = "SELECT `xxx_reverse_od`.`id` from xxx_reverse_od_0446 `xxx_reverse_od` where `xxx_reverse_od`.name=1 limit 1;";
 
@@ -25,7 +26,7 @@ public class MySqlParameterizedOutputVisitorTest_26 extends TestCase {
         assertEquals("SELECT `xxx_reverse_od`.`id`\n" +
                 "FROM xxx_reverse_od `xxx_reverse_od`\n" +
                 "WHERE `xxx_reverse_od`.name = ?\n" +
-                "LIMIT ?", psql);
+                "LIMIT ?;", psql);
 
         SQLStatementParser parser = SQLParserUtils.createSQLStatementParser(psql, dbType);
         List<SQLStatement> stmtList = parser.parseStatementList();
@@ -54,6 +55,6 @@ public class MySqlParameterizedOutputVisitorTest_26 extends TestCase {
         assertEquals("SELECT `xxx_reverse_od`.`id`\n" +
                 "FROM xxx_reverse_od_0446 `xxx_reverse_od`\n" +
                 "WHERE `xxx_reverse_od`.name = ?\n" +
-                "LIMIT ?", buf.toString());
+                "LIMIT ?;", buf.toString());
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 1999-2101 Alibaba Group Holding Ltd.
+ * Copyright 1999-2017 Alibaba Group Holding Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,18 @@ package com.alibaba.druid.sql.ast.statement;
 
 import com.alibaba.druid.sql.ast.SQLExpr;
 import com.alibaba.druid.sql.ast.SQLName;
-import com.alibaba.druid.sql.ast.SQLStatement;
+import com.alibaba.druid.sql.ast.SQLObject;
 import com.alibaba.druid.sql.ast.SQLStatementImpl;
-import com.alibaba.druid.sql.dialect.oracle.visitor.OracleASTVisitor;
+import com.alibaba.druid.sql.ast.expr.SQLPropertyExpr;
 import com.alibaba.druid.sql.visitor.SQLASTVisitor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by wenshao on 16/9/14.
  */
-public class SQLCreateSequenceStatement extends SQLStatementImpl {
+public class SQLCreateSequenceStatement extends SQLStatementImpl implements SQLCreateStatement {
     private SQLName name;
 
     private SQLExpr startWith;
@@ -34,10 +37,25 @@ public class SQLCreateSequenceStatement extends SQLStatementImpl {
     private SQLExpr maxValue;
     private boolean noMaxValue;
     private boolean noMinValue;
-
+    private Boolean withCache;
     private Boolean cycle;
     private Boolean cache;
+    private SQLExpr cacheValue;
     private Boolean order;
+
+    // for drds
+    private boolean simple;
+    private boolean group;
+    private boolean time;
+
+    private SQLExpr unitCount;
+    private SQLExpr unitIndex;
+
+    private SQLExpr step;
+
+    public SQLCreateSequenceStatement() {
+
+    }
 
     @Override
     public void accept0(SQLASTVisitor visitor) {
@@ -49,6 +67,27 @@ public class SQLCreateSequenceStatement extends SQLStatementImpl {
             acceptChild(visitor, maxValue);
         }
         visitor.endVisit(this);
+    }
+
+    @Override
+    public List<SQLObject> getChildren() {
+        List<SQLObject> children = new ArrayList<SQLObject>();
+        if (name != null) {
+            children.add(name);
+        }
+        if (startWith != null) {
+            children.add(startWith);
+        }
+        if (incrementBy != null) {
+            children.add(incrementBy);
+        }
+        if (minValue != null) {
+            children.add(minValue);
+        }
+        if (maxValue != null) {
+            children.add(maxValue);
+        }
+        return children;
     }
 
     public SQLName getName() {
@@ -129,5 +168,94 @@ public class SQLCreateSequenceStatement extends SQLStatementImpl {
 
     public void setNoMinValue(boolean noMinValue) {
         this.noMinValue = noMinValue;
+    }
+
+    public String getSchema() {
+        SQLName name = getName();
+        if (name == null) {
+            return null;
+        }
+
+        if (name instanceof SQLPropertyExpr) {
+            return ((SQLPropertyExpr) name).getOwnernName();
+        }
+
+        return null;
+    }
+
+    public SQLExpr getCacheValue() {
+        return cacheValue;
+    }
+
+    public void setCacheValue(SQLExpr cacheValue) {
+        if (cacheValue != null) {
+            cacheValue.setParent(this);
+        }
+        this.cacheValue = cacheValue;
+    }
+
+    public boolean isSimple() {
+        return simple;
+    }
+
+    public void setSimple(boolean simple) {
+        this.simple = simple;
+    }
+
+    public boolean isGroup() {
+        return group;
+    }
+
+    public void setGroup(boolean group) {
+        this.group = group;
+    }
+
+    public SQLExpr getUnitCount() {
+        return unitCount;
+    }
+
+    public void setUnitCount(SQLExpr x) {
+        if (x != null) {
+            x.setParent(this);
+        }
+        this.unitCount = x;
+    }
+
+    public SQLExpr getUnitIndex() {
+        return unitIndex;
+    }
+
+    public void setUnitIndex(SQLExpr x) {
+        if (x != null) {
+            x.setParent(this);
+        }
+        this.unitIndex = x;
+    }
+
+    public boolean isTime() {
+        return time;
+    }
+
+    public void setTime(boolean time) {
+        this.time = time;
+    }
+
+    public Boolean getWithCache() {
+        return withCache;
+    }
+
+    public void setWithCache(Boolean withCache) {
+        this.withCache = withCache;
+    }
+
+    public SQLExpr getStep() {
+        return step;
+    }
+
+    public void setStep(SQLExpr step) {
+        if (step != null) {
+            step.setParent(this);
+        }
+        this.step = step;
     }
 }

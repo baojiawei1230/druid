@@ -1,5 +1,5 @@
 /*
- * Copyright 1999-2101 Alibaba Group Holding Ltd.
+ * Copyright 1999-2017 Alibaba Group Holding Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,14 @@
  */
 package com.alibaba.druid.bvt.sql.mysql.select;
 
-import java.util.List;
-
-import org.junit.Assert;
-
 import com.alibaba.druid.sql.MysqlTest;
 import com.alibaba.druid.sql.SQLUtils;
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
 import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlSchemaStatVisitor;
+import org.junit.Assert;
+
+import java.util.List;
 
 public class MySqlSelectTest_26 extends MysqlTest {
 
@@ -53,12 +52,12 @@ public class MySqlSelectTest_26 extends MysqlTest {
         
         {
             String output = SQLUtils.toMySqlString(stmt);
-            Assert.assertEquals("SELECT truncate(12.0123, 2)", //
+            Assert.assertEquals("SELECT truncate(12.0123, 2);", //
                                 output);
         }
         {
             String output = SQLUtils.toMySqlString(stmt, SQLUtils.DEFAULT_LCASE_FORMAT_OPTION);
-            Assert.assertEquals("select truncate(12.0123, 2)", //
+            Assert.assertEquals("select truncate(12.0123, 2);", //
                                 output);
         }
     }

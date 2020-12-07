@@ -1,5 +1,5 @@
 /*
- * Copyright 1999-2101 Alibaba Group Holding Ltd.
+ * Copyright 1999-2017 Alibaba Group Holding Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,14 @@
  */
 package com.alibaba.druid.bvt.sql.oracle.create;
 
-import java.util.List;
-
-import org.junit.Assert;
-
 import com.alibaba.druid.sql.OracleTest;
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.dialect.oracle.parser.OracleStatementParser;
 import com.alibaba.druid.sql.dialect.oracle.visitor.OracleSchemaStatVisitor;
 import com.alibaba.druid.stat.TableStat;
+import org.junit.Assert;
+
+import java.util.List;
 
 public class OracleCreateProcedureTest2 extends OracleTest {
 
@@ -47,7 +46,23 @@ public class OracleCreateProcedureTest2 extends OracleTest {
 
         OracleStatementParser parser = new OracleStatementParser(sql);
         List<SQLStatement> statementList = parser.parseStatementList();
-        print(statementList);
+
+        Assert.assertEquals("CREATE OR REPLACE PROCEDURE transfer (\n" +
+                        "\tfrom_acct NUMBER, \n" +
+                        "\tto_acct NUMBER, \n" +
+                        "\tamount NUMBER\n" +
+                        ")\n" +
+                        "IS\n" +
+                        "BEGIN\n" +
+                        "\tUPDATE accounts\n" +
+                        "\tSET balance = balance - amount\n" +
+                        "\tWHERE account_id = from_acct;\n" +
+                        "\tUPDATE accounts\n" +
+                        "\tSET balance = balance + amount\n" +
+                        "\tWHERE account_id = to_acct;\n" +
+                        "\tCOMMIT WRITE NOWAIT IMMEDIATE;\n" +
+                        "END;",
+                statementList.get(0).toString());
 
         Assert.assertEquals(1, statementList.size());
 
@@ -66,10 +81,11 @@ public class OracleCreateProcedureTest2 extends OracleTest {
 
         Assert.assertTrue(visitor.getTables().containsKey(new TableStat.Name("accounts")));
 
-         Assert.assertEquals(5, visitor.getColumns().size());
-        Assert.assertEquals(3, visitor.getConditions().size());
-        Assert.assertEquals(2, visitor.getRelationships().size());
+        Assert.assertEquals(2, visitor.getColumns().size());
+        Assert.assertEquals(1, visitor.getConditions().size());
+        Assert.assertEquals(0, visitor.getRelationships().size());
 
-        // Assert.assertTrue(visitor.getColumns().contains(new TableStat.Column("employees", "salary")));
+         Assert.assertTrue(visitor.containsColumn("accounts", "balance"));
+         Assert.assertTrue(visitor.containsColumn("accounts", "account_id"));
     }
 }
